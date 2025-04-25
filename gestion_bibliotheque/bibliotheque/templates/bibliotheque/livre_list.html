@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Notre bibliothèque</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+  </head>
+
+  <header class="bg-primary text-white py-3">
+    <div class="container d-flex justify-content-between align-items-center">
+      <h1 class="h3 mb-0">Novela</h1>
+      <nav>
+        <a href="#" class="text-white me-3 text-decoration-none">Accueil</a>
+        <a href="#" class="text-white me-3 text-decoration-none">À propos</a>
+        <a href="#" class="text-white text-decoration-none">Contact</a>
+      </nav>
+    </div>
+  </header>
+  
+<body>
+<h1 class="text-center">Visitez notre collection de livre</h1>
+<ul>
+    {% for livre in livres %}
+        <li><a href="{% url 'detail_livre' livre.pk %}">{{ livre.titre }}</a> - par {{ livre.auteur }} ({{ livre.date_publication }}) - ISBN : {{livre.isbn}}</li>
+        <p>Publié par {{ livre.ajout_par.username }}
+    {% empty %}
+        <li>Aucun livre disponible.</li>
+    {% endfor %}
+</ul>
+
+{% if user.is_authenticated %}
+    <a href="{% url 'creer_livre' %}">Entrez un nouveau livre</a>
+    <form method="post" action="{% url 'logout' %}" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit">Se déconnecter</button>
+    </form>
+{% else %}
+<div class='btn'>
+    <a class='btn btn-primary' href="{% url 'login' %}">Se connecter</a>
+    <a class='btn btn-primary' href="{% url 'signup' %}">S’inscrire</a>
+</div>
+{% endif %}
+
+<footer class="bg-dark text-white text-center py-4 fixed-bottom">
+    <p>2025 - Tous droits réservés</p>
+    <a href="#" class="text-white">Politique de confidentialité</a> | 
+    <a href="#" class="text-white">Conditions d'utilisation</a>
+</footer> 
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
+</body>
+</html>
